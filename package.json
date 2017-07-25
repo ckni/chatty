@@ -1,5 +1,5 @@
 {
-  "name": "react-webpack-boilerplate",
+  "name": "chatty",
   "version": "1.0.0",
   "scripts": {
     "start": "./node_modules/.bin/webpack-dev-server",
