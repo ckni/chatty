@@ -9,7 +9,7 @@ class App extends Component {
     super();
     this.state = {
       currentUser: {
-        name: "Bob" // optional. if currentUser is not defined, it means the user is Anonymous
+        name: null
       },
       messages: [
         {
@@ -26,17 +26,13 @@ class App extends Component {
       sendMessage: (content) => {
         if (content.keyCode === 13) {
           const newMessage = {
-            id: this.state.messages.length,
             username: this.state.currentUser.name || "Anonymous",
             content: content.target.value
           };
 
           if (newMessage.content) {
-            const messages = this.state.messages.concat(newMessage);
             this.state.socket.send(JSON.stringify(newMessage));
-
             content.target.value = "";
-            this.setState({ messages: messages });
           } else {
             alert("You cannot send an empty message");
           }
@@ -47,6 +43,12 @@ class App extends Component {
         this.setState({ currentUser: newUser });
       },
       socket: new WebSocket("ws://localhost:3001")
+    };
+
+    this.state.socket.onmessage = msg => {
+      const newMessage = JSON.parse(msg.data);
+      const messages = this.state.messages.concat(newMessage);
+      this.setState({ messages: messages });
     };
   }
 
