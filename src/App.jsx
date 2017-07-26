@@ -25,10 +25,14 @@ class App extends Component {
       ],
       sendMessage: (content) => {
         if (content.keyCode === 13) {
+          this.state.socket.send(content.target.value);
+
           const newMessage = { id: Math.random(), username: this.state.currentUser.name, content: content.target.value };
           const messages = this.state.messages.concat(newMessage);
+
+          content.target.value = "";
+
           this.setState({ messages: messages });
-          this.state.socket.send(content.target.value);
         }
       },
       setUser: (content) => {
