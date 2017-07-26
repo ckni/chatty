@@ -28,12 +28,14 @@ class App extends Component {
           const newMessage = { id: Math.random(), username: this.state.currentUser.name, content: content.target.value };
           const messages = this.state.messages.concat(newMessage);
           this.setState({ messages: messages });
+          this.state.socket.send(content.target.value);
         }
       },
       setUser: (content) => {
         const newUser = { name: content.target.value };
         this.setState({ currentUser: newUser });
-      }
+      },
+      socket: new WebSocket("ws://localhost:3001")
     };
   }
 
