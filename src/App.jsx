@@ -25,14 +25,21 @@ class App extends Component {
       ],
       sendMessage: (content) => {
         if (content.keyCode === 13) {
-          this.state.socket.send(content.target.value);
+          const newMessage = {
+            id: this.state.messages.length,
+            username: this.state.currentUser.name || "Anonymous",
+            content: content.target.value
+          };
 
-          const newMessage = { id: Math.random(), username: this.state.currentUser.name, content: content.target.value };
-          const messages = this.state.messages.concat(newMessage);
+          if (newMessage.content) {
+            const messages = this.state.messages.concat(newMessage);
+            this.state.socket.send(JSON.stringify(newMessage));
 
-          content.target.value = "";
-
-          this.setState({ messages: messages });
+            content.target.value = "";
+            this.setState({ messages: messages });
+          } else {
+            alert("You cannot send an empty message");
+          }
         }
       },
       setUser: (content) => {
