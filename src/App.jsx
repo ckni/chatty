@@ -14,6 +14,7 @@ class App extends Component {
       lastUser: {
         name: ""
       },
+      userCount: 0,
       messages: [
         {
           id: 0,
@@ -72,11 +73,22 @@ class App extends Component {
 
     this.state.socket.onmessage = msg => {
       const newMessage = JSON.parse(msg.data);
+      const messages = this.state.messages.concat(newMessage);
+      switch(newMessage.type) {
+        case "textMessage":
+          this.state.notificationSound.play();
+          this.setState({ messages: messages });
+          break;
+        case "nameChange":
+          this.setState({ messages: messages });
+          break;
+        case "userCount":
+          this.setState({ userCount: newMessage.content });
+      }
       if (newMessage.type === "textMessage") {
         this.state.notificationSound.play();
       }
-      const messages = this.state.messages.concat(newMessage);
-      this.setState({ messages: messages });
+
     };
   }
 
@@ -92,9 +104,9 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Navbar />
+        <Navbar userCount={ this.state.userCount }/>
         <MessageList messages={ this.state.messages }/>
-        <Chatbar username={ this.state.currentUser.name } sendMessage={ this.state.sendMessage } setUser={ this.state.setUser } buttonSendMessage={ this.state.buttonSendMessage } clearHistory={ this.state.clearHistory} />
+        <Chatbar username={ this.state.currentUser.name } sendMessage={ this.state.sendMessage } setUser={ this.state.setUser } buttonSendMessage={ this.state.buttonSendMessage } clearHistory={ this.state.clearHistory}/>
       </div>
     );
   }
