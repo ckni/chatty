@@ -11,6 +11,9 @@ class App extends Component {
       currentUser: {
         name: null
       },
+      lastUser: {
+        name: null
+      },
       messages: [
         {
           id: 0,
@@ -23,40 +26,55 @@ class App extends Component {
         if (content.keyCode === 13) {
           const newMessage = {
             username: this.state.currentUser.name || "Anonymous",
-            content: content.target.value
+            content: content.target.value,
+            type: "textMessage"
           };
 
           if (newMessage.content) {
             this.state.socket.send(JSON.stringify(newMessage));
             content.target.value = "";
-          } else {
-            alert("You cannot send an empty message");
           }
         }
       },
       buttonSendMessage: () => {
         const newMessage = {
           username: this.state.currentUser.name || "Anonymous",
-          content: document.getElementsByClassName("chatbar-message")[0].value
+          content: document.getElementsByClassName("chatbar-message")[0].value,
+          type: "textMessage"
         };
 
         if (newMessage.content) {
           this.state.socket.send(JSON.stringify(newMessage));
           document.getElementsByClassName("chatbar-message")[0].value = "";
-        } else {
-          alert("You cannot send an empty message");
         }
       },
       setUser: (content) => {
+        const currentUser = this.state.currentUser;
         const newUser = { name: content.target.value };
-        this.setState({ currentUser: newUser });
+
+        if (currentUser.name !== newUser.name) {
+          const message = {
+            username: "Chatty",
+            content: `${currentUser.name || "Anonymous"} has set username to ${newUser.name || "Anonymous"}`,
+            type: "nameChange"
+          };
+
+          this.state.socket.send(JSON.stringify(message));
+          this.setState({ lastUser: currentUser });
+          this.setState({ currentUser: newUser });
+        }
+      },
+      clearHistory: () => {
+        this.setState({ messages: [] });
       },
       socket: new WebSocket("ws://localhost:3001")
     };
 
     this.state.socket.onmessage = msg => {
-      this.state.notificationSound.play();
       const newMessage = JSON.parse(msg.data);
+      if (newMessage.type === "textMessage") {
+        this.state.notificationSound.play();
+      }
       const messages = this.state.messages.concat(newMessage);
       this.setState({ messages: messages });
     };
@@ -76,7 +94,7 @@ class App extends Component {
       <div>
         <Navbar />
         <MessageList messages={ this.state.messages }/>
-        <Chatbar username={ this.state.currentUser.name } sendMessage={ this.state.sendMessage } setUser={ this.state.setUser } buttonSendMessage={ this.state.buttonSendMessage } />
+        <Chatbar username={ this.state.currentUser.name } sendMessage={ this.state.sendMessage } setUser={ this.state.setUser } buttonSendMessage={ this.state.buttonSendMessage } clearHistory={ this.state.clearHistory} />
       </div>
     );
   }

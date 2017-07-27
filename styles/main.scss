@@ -94,7 +94,7 @@ body {
 }
 
 .navbar-brand {
-  color: $dark-gray;
+  color: $light-gray;
   display: block;
   float: left;
   font-weight: 700;
@@ -103,4 +103,8 @@ body {
   line-height: 60px;
   padding: 0 10px;
   text-decoration: none;
+}
+
+.system-message {
+  font-style: italic;
 }
