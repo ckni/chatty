@@ -22,11 +22,12 @@ body {
   right: 0;
 }
 
+.chatbar-button,
 .chatbar-message,
 .chatbar-username {
   background-color: $light-gray;
   border: none;
-  border-radius: 1px;
+  border-radius: 2px;
   color: $dark-gray;
   display: block;
   height: 40px;
@@ -35,17 +36,24 @@ body {
   padding: 0 9px;
 }
 
+.chatbar-button:focus,
 .chatbar-message:focus,
 .chatbar-username:focus {
   outline: none;
 }
 
-.chatbar-message {
-  flex: 8;
+.chatbar-button:hover {
+  font-weight: bold;
+  text-decoration: underline;
 }
 
+.chatbar-button,
 .chatbar-username {
   flex: 2;
+}
+
+.chatbar-message {
+  flex: 8;
 }
 
 .message {
@@ -58,6 +66,7 @@ body {
   padding: 5px 20px;
 }
 
+.message-button,
 .message-content,
 .message-username {
   overflow: hidden;

@@ -15,7 +15,7 @@ class App extends Component {
         {
           id: 0,
           username: "Chatty",
-          content: "Welcome to Chatty! Get started - type a message and hit [ENTER]",
+          content: "Welcome to Chatty!",
         }
       ],
       sendMessage: (content) => {
@@ -31,6 +31,19 @@ class App extends Component {
           } else {
             alert("You cannot send an empty message");
           }
+        }
+      },
+      buttonSendMessage: () => {
+        const newMessage = {
+          username: this.state.currentUser.name || "Anonymous",
+          content: document.getElementsByClassName("chatbar-message")[0].value
+        };
+
+        if (newMessage.content) {
+          this.state.socket.send(JSON.stringify(newMessage));
+          document.getElementsByClassName("chatbar-message")[0].value = "";
+        } else {
+          alert("You cannot send an empty message");
         }
       },
       setUser: (content) => {
@@ -61,7 +74,7 @@ class App extends Component {
       <div>
         <Navbar />
         <MessageList messages={ this.state.messages }/>
-        <Chatbar username={ this.state.currentUser.name } sendMessage={ this.state.sendMessage } setUser={ this.state.setUser } />
+        <Chatbar username={ this.state.currentUser.name } sendMessage={ this.state.sendMessage } setUser={ this.state.setUser } buttonSendMessage={ this.state.buttonSendMessage } />
       </div>
     );
   }
