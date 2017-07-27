@@ -18,6 +18,7 @@ class App extends Component {
           content: "Welcome to Chatty!",
         }
       ],
+      notificationSound: new Audio("https://notificationsounds.com/message-tones/get-outta-here-505/download/mp3"),
       sendMessage: (content) => {
         if (content.keyCode === 13) {
           const newMessage = {
@@ -54,6 +55,7 @@ class App extends Component {
     };
 
     this.state.socket.onmessage = msg => {
+      this.state.notificationSound.play();
       const newMessage = JSON.parse(msg.data);
       const messages = this.state.messages.concat(newMessage);
       this.setState({ messages: messages });
