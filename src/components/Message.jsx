@@ -11,10 +11,19 @@ class Message extends Component {
     }
   }
 
+  renderUsername() {
+    switch(this.props.color) {
+      case "chatty":
+        return (<span className="message-username" style={{ color: "#19c5eb" }}>{ this.props.username }</span>);
+      default:
+        return (<span className="message-username" style={{ color: this.props.color }}>{ this.props.username }</span>);
+    }
+  }
+
   render() {
     return (
       <div className="message">
-        <span className="message-username">{ this.props.username }</span>
+        {this.renderUsername()}
         {this.renderMessage()}
       </div>
     );

@@ -20,20 +20,38 @@ let userCount = 0;
 function createMessage() {
   return {
     id: generateUUID(),
-    username: "Chatty",
+    color: "chatty",
     content: userCount,
-    type: "userCount"
+    type: "userCount",
+    username: "[Chatty]"
   };
+}
+
+function generateColor() {
+  const hexChars = "0123456789ABCDEF";
+  let hex = "#";
+
+  for (var i = 0; i < 6; i++) {
+    hex += hexChars.charAt(Math.floor(Math.random() * hexChars.length));
+  }
+
+  return hex;
 }
 
 wss.on("connection", (ws) => {
   console.log("Client connected");
+  const color = generateColor();
   userCount ++;
   broadcast(JSON.stringify(createMessage()));
 
   ws.on("message", msg => {
     const message = JSON.parse(msg);
     message.id = generateUUID();
+    message.color = color;
+
+    if (message.type === "nameChange") {
+      message.color = "chatty";
+    }
 
     broadcast(JSON.stringify(message));
   });
