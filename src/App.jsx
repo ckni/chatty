@@ -9,10 +9,10 @@ class App extends Component {
     super();
     this.state = {
       currentUser: {
-        name: null
+        name: ""
       },
       lastUser: {
-        name: null
+        name: ""
       },
       messages: [
         {
