@@ -14,13 +14,8 @@ class App extends Component {
       messages: [
         {
           id: 0,
-          username: "Bob",
-          content: "Has anyone seen my marbles?",
-        },
-        {
-          id: 1,
-          username: "Anonymous",
-          content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
+          username: "Chatty",
+          content: "Welcome to Chatty! Get started - type a message and hit [ENTER]",
         }
       ],
       sendMessage: (content) => {
