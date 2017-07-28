@@ -23,7 +23,7 @@ function createMessage() {
     color: "chatty",
     content: userCount,
     type: "userCount",
-    username: "[Chatty]"
+    username: "Chatty"
   };
 }
 

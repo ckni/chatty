@@ -20,7 +20,7 @@ class App extends Component {
           id: 0,
           color: "chatty",
           content: "Welcome to Chatty!",
-          username: "[Chatty]",
+          username: "Chatty",
         }
       ],
       notificationSound: new Audio("https://notificationsounds.com/message-tones/get-outta-here-505/download/mp3"),
